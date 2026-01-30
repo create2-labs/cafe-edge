@@ -27,7 +27,6 @@ docker build -f nginx/Dockerfile -t oleglod/cafe-edge:nginx-latest ./nginx
 
 ```bash
 docker pull oleglod/cafe-crypto-backend:runtime-oqs
-# or build from cafe-crypto-backend
 ```
 
 ---

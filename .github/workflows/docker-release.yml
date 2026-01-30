@@ -53,6 +53,18 @@ jobs:
           echo "Commit SHA: $SHORT_SHA"
 
       # ------------------------------------------------------------
+      # Build cafe-edge nginx image (amd64, for scan & publish)
+      # ------------------------------------------------------------
+      - name: Build cafe-edge:scan-local-nginx image (local, amd64)
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --load \
+            -f nginx/Dockerfile \
+            -t oleglod/cafe-edge:scan-local-nginx \
+            .
+
+      # ------------------------------------------------------------
       # Docker Scout installation
       # ------------------------------------------------------------
       - name: Install Docker Scout CLI
@@ -62,6 +74,14 @@ jobs:
           echo "$HOME/.docker/cli-plugins" >> $GITHUB_PATH
           docker scout version
 
+      # ------------------------------------------------------------
+      # Security scan (NON-BLOCKING - for information only)
+      # ------------------------------------------------------------
+      - name: Scan cafe-edge:scan-local-nginx image with Docker Scout
+        continue-on-error: true
+        run: |
+          docker scout cves oleglod/cafe-edge:scan-local-nginx \
+            --only-severity critical,high
 
       # ------------------------------------------------------------
       # Tag & publish images (amd64 only)

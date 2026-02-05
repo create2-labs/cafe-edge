@@ -84,14 +84,14 @@ jobs:
             --only-severity critical,high
 
       # ------------------------------------------------------------
-      # Tag & publish images (amd64 only)
+      # Build & publish image (multi-arch: amd64, arm64)
       # ------------------------------------------------------------
-
-      - name: Tag & publish cafe-edge:nginx image (amd64)
+      - name: Build & publish cafe-edge:nginx image (amd64, arm64)
         run: |
-          docker tag oleglod/cafe-edge:scan-local-nginx oleglod/cafe-edge:${{ steps.version.outputs.full_version }}-nginx
-          docker tag oleglod/cafe-edge:scan-local-nginx oleglod/cafe-edge:sha-${{ steps.version.outputs.short_sha }}-nginx
-          docker tag oleglod/cafe-edge:scan-local-nginx oleglod/cafe-edge:latest-nginx
-          docker push oleglod/cafe-edge:${{ steps.version.outputs.full_version }}-nginx
-          docker push oleglod/cafe-edge:sha-${{ steps.version.outputs.short_sha }}-nginx
-          docker push oleglod/cafe-edge:latest-nginx
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            -f nginx/Dockerfile \
+            -t oleglod/cafe-edge:${{ steps.version.outputs.full_version }}-nginx \
+            -t oleglod/cafe-edge:sha-${{ steps.version.outputs.short_sha }}-nginx \
+            -t oleglod/cafe-edge:latest-nginx \
+            --push .

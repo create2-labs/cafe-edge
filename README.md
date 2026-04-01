@@ -48,7 +48,7 @@ To use the image from cafe-deploy, point the compose image to the published tag 
 
 ## Published image
 
-CI publishes the image on Docker Hub on tag push (e.g. `v1.0.0`):
+CI publishes the image on [Docker Hub](https://hub.docker.com/r/oleglod/cafe-edge) on tag push (e.g. `v1.0.0`):
 
 - `oleglod/cafe-edge:<tag>-nginx` (e.g. `v1.0.0-nginx`, `latest-nginx`)
 
